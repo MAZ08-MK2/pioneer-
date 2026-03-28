@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Pioneer DEQ-7200 with Passcode</title>
+<title>Pioneer DEQ-7200 with Lock</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
 
@@ -32,18 +32,36 @@ html, body {
   background: linear-gradient(90deg, #222, #555, #888, #555, #333, #555, #888, #555, #222);
 }
 
+/* ===== PASSCODE OVERLAY ===== */
+.overlay {
+  position: absolute; inset: 0; background: rgba(0,0,0,0.96);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  z-index: 500; gap: 20px;
+}
+.ov-pioneer { font-family: 'Orbitron', monospace; font-size: 18px; font-weight: 900; color: #ccc; letter-spacing: 5px; }
+.pass-display { 
+  font-size: 42px; color: #00ff66; letter-spacing: 12px; height: 60px; 
+  text-shadow: 0 0 12px #00ff66; font-family: 'Orbitron'; 
+  background: #050a05; padding: 0 20px; border-radius: 4px; border: 1px solid #1a331a;
+}
+.keypad { display: grid; grid-template-columns: repeat(3, 75px); gap: 12px; }
+.key-btn {
+  width: 75px; height: 55px; 
+  background: linear-gradient(180deg, #2a2a2a, #151515);
+  border: 1px solid #444; color: #eee; font-size: 20px; font-family: 'Orbitron';
+  cursor: pointer; border-radius: 4px; box-shadow: 0 3px 6px rgba(0,0,0,0.5);
+}
+.key-btn:active { background: #333; transform: translateY(1px); }
+.ov-err { color: #ff2200; font-size: 12px; letter-spacing: 2px; height: 20px; opacity: 0; transition: 0.3s; }
+
 /* ===== TOP LABEL BAR ===== */
 .top-bar {
   display: flex; align-items: center; padding: 3px 10px 2px;
   background: linear-gradient(180deg, #1e1e1e 0%, #141414 100%);
   border-bottom: 1px solid #000; flex-shrink: 0; height: 28px;
 }
-
-.pioneer-logo {
-  font-family: 'Orbitron', monospace; font-size: 11px; font-weight: 900;
-  color: #ccc; letter-spacing: 3px; margin-right: 6px;
-}
-
+.pioneer-logo { font-family: 'Orbitron', monospace; font-size: 11px; font-weight: 900; color: #ccc; letter-spacing: 3px; margin-right: 6px; }
+.pioneer-logo::before { content: '⊕ '; color: #aaa; font-size: 9px; }
 .model-name { font-size: 8px; color: #666; letter-spacing: 1px; margin-right: auto; }
 .dsp-badge { font-family: 'Orbitron', monospace; font-size: 14px; font-weight: 900; color: #bbb; letter-spacing: 2px; }
 
@@ -52,13 +70,11 @@ html, body {
   display: flex; align-items: center; padding: 1px 8px; background: #0d0d0d;
   border-bottom: 1px solid #000; gap: 4px; flex-shrink: 0; height: 16px;
 }
-
 .sf-label { font-size: 7px; color: #555; letter-spacing: 1px; white-space: nowrap; padding: 0 4px; border-right: 1px solid #222; }
 .sf-label.active { color: #00cc55; text-shadow: 0 0 4px #00ff66; }
 
 /* ===== MAIN SECTION ===== */
 .main { flex: 1; display: flex; flex-direction: row; padding: 4px 6px; gap: 6px; overflow: hidden; }
-
 .left-ctrl { width: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
 .knob {
   width: 34px; height: 34px; border-radius: 50%;
@@ -81,22 +97,6 @@ canvas { width: 100%; height: 100%; display: block; }
 .seg-display { background: #000; border: 1px solid #111; padding: 4px 6px; display: flex; flex-direction: column; align-items: flex-end; }
 .seg-number { font-size: 32px; color: #ff2200; text-shadow: 0 0 6px #ff4400; line-height: 1; letter-spacing: -2px; }
 
-/* ===== PASSCODE OVERLAY ===== */
-.overlay {
-  position: absolute; inset: 0; background: rgba(0,0,0,0.96);
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  z-index: 500; gap: 20px;
-}
-.pass-display { font-size: 42px; color: #00ff66; letter-spacing: 12px; height: 50px; text-shadow: 0 0 10px #00ff66; font-family: 'Orbitron'; }
-.keypad { display: grid; grid-template-columns: repeat(3, 75px); gap: 12px; }
-.key-btn {
-  width: 75px; height: 55px; background: linear-gradient(180deg, #222, #111);
-  border: 1px solid #444; color: #fff; font-size: 20px; font-family: 'Orbitron';
-  cursor: pointer; border-radius: 4px;
-}
-.key-btn:active { background: #333; }
-.ov-err { color: #ff2200; font-size: 12px; letter-spacing: 2px; height: 20px; opacity: 0; transition: 0.3s; }
-
 /* ===== BOTTOM BAR ===== */
 .bottom-bar { display: flex; align-items: center; padding: 3px 8px; background: #111; gap: 4px; flex-shrink: 0; height: 26px; }
 .bb-btn { border: 1px solid #2a2a2a; color: #555; font-size: 7px; padding: 2px 6px; cursor: pointer; }
@@ -107,7 +107,7 @@ canvas { width: 100%; height: 100%; display: block; }
 
 <div class="unit">
   <div class="overlay" id="passOverlay">
-    <div class="pioneer-logo" style="font-size: 18px;">⊕ PIONEER</div>
+    <div class="ov-pioneer">⊕ PIONEER</div>
     <div class="pass-display" id="passCodeDisplay">____</div>
     <div class="keypad">
       <button class="key-btn" onclick="pressKey('1')">1</button>
@@ -140,7 +140,7 @@ canvas { width: 100%; height: 100%; display: block; }
     <div class="sf-label">POPS</div>
     <div class="sf-label">JAZZ</div>
     <div style="flex:1"></div>
-    <div class="sf-label" id="peakLabel" style="color:#311; border:none">PEAK</div>
+    <div class="sf-label" style="color:#311; border:none">PEAK</div>
   </div>
 
   <div class="main">
@@ -172,23 +172,38 @@ canvas { width: 100%; height: 100%; display: block; }
 </div>
 
 <script>
-let audioCtx, analyser, source;
-let isRunning = false;
+// === PASSCODE LOGIC ===
 let currentPass = "";
 const TARGET_PASS = "0310";
 
-// --- PASSCODE ---
-function pressKey(n) { if(currentPass.length < 4) { currentPass += n; updateDisplay(); } }
-function clearPass() { currentPass = ""; updateDisplay(); document.getElementById('passError').style.opacity = 0; }
-function updateDisplay() { document.getElementById('passCodeDisplay').textContent = currentPass.padEnd(4, "_"); }
-async function checkPass() {
-  if(currentPass === TARGET_PASS) { document.getElementById('passOverlay').style.display='none'; startAudio(); }
-  else { document.getElementById('passError').style.opacity = 1; setTimeout(clearPass, 600); }
+function pressKey(n) {
+  if(currentPass.length < 4) {
+    currentPass += n;
+    updateDisplay();
+  }
+}
+function clearPass() {
+  currentPass = "";
+  updateDisplay();
+  document.getElementById('passError').style.opacity = 0;
+}
+function updateDisplay() {
+  document.getElementById('passCodeDisplay').textContent = currentPass.padEnd(4, "_");
+}
+function checkPass() {
+  if(currentPass === TARGET_PASS) {
+    document.getElementById('passOverlay').style.display='none';
+    startAudio();
+  } else {
+    document.getElementById('passError').style.opacity = 1;
+    setTimeout(clearPass, 600);
+  }
 }
 
-// --- AUDIO (元の設定に戻したスペアナ) ---
+// === AUDIO (元の高品質スペアナ) ===
+let audioCtx, analyser, source;
+let isRunning = false;
 const FFT_SIZE = 2048;
-const NUM_BANDS = 28;
 const BAND_FREQS = [20, 50, 100, 200, 400, 630, 1000, 1600, 2500, 4000, 6300, 8000, 10000, 12500, 16000, 20000];
 const SHOW_LABELS = [20, 50, 100, 200, 400, 1000, 2500, 6300, 10000, 16000];
 const DOT_ROWS = 16;
@@ -222,6 +237,12 @@ async function startAudio() {
   } catch(e) { alert("Mic Access Denied"); }
 }
 
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath(); ctx.moveTo(x+r, y); ctx.lineTo(x+w-r, y); ctx.quadraticCurveTo(x+w, y, x+w, y+r);
+  ctx.lineTo(x+w, y+h-r); ctx.quadraticCurveTo(x+w, y+h, x+w-r, y+h); ctx.lineTo(x+r, y+h);
+  ctx.quadraticCurveTo(x, y+h, x, y+h-r); ctx.lineTo(x, y+r); ctx.quadraticCurveTo(x, y, x+r, y); ctx.closePath();
+}
+
 function draw() {
   requestAnimationFrame(draw);
   if (!isRunning) return;
@@ -233,17 +254,15 @@ function draw() {
   ctx.fillStyle = '#020402'; ctx.fillRect(0,0,W,H);
 
   const nBands = BAND_FREQS.length;
-  const colW = (W - 8) / nBands;
-  const dotSize = colW * 0.75; // 元の太さに戻す
-  const rowH = (H - 8) / DOT_ROWS;
+  const colW = W / nBands;
+  const dotSize = colW * 0.75; // 元の太さ
+  const rowH = H / DOT_ROWS;
 
   for (let i = 0; i < nBands; i++) {
     const f = BAND_FREQS[i];
     const idx = Math.floor(f / (audioCtx.sampleRate/2) * freqData.length);
     let v = freqData[idx] / 255;
-    
-    // 感度も元の自然な設定へ
-    if (i > 10) v *= 1.2; 
+    if (i > 10) v *= 1.2; // 高域感度補正
     v = Math.min(1, v);
 
     if (v > peaks[i]) peaks[i] = v; else peaks[i] -= 0.008;
@@ -251,17 +270,21 @@ function draw() {
 
     for (let r = 0; r < DOT_ROWS; r++) {
       const fromBottom = DOT_ROWS - 1 - r;
-      const cx = 4 + i * colW + (colW - dotSize)/2;
-      const cy = 4 + r * rowH + (rowH * 0.1);
+      const cx = i * colW + (colW - dotSize)/2;
+      const cy = r * rowH + (rowH * 0.1);
 
       if (fromBottom < litRows) {
-        if (fromBottom >= DOT_ROWS-2) ctx.fillStyle = '#ff2200';
-        else if (fromBottom >= DOT_ROWS-4) ctx.fillStyle = '#ccaa00';
-        else ctx.fillStyle = '#00cc44';
-        ctx.fillRect(cx, cy, dotSize, rowH * 0.8);
+        ctx.shadowBlur = 8;
+        if (fromBottom >= DOT_ROWS-2) { ctx.fillStyle = '#ff2200'; ctx.shadowColor = '#ff2200'; }
+        else if (fromBottom >= DOT_ROWS-4) { ctx.fillStyle = '#ccaa00'; ctx.shadowColor = '#ccaa00'; }
+        else { ctx.fillStyle = '#00cc44'; ctx.shadowColor = '#00cc44'; }
+        roundRect(ctx, cx, cy, dotSize, rowH * 0.8, 1);
+        ctx.fill();
+        ctx.shadowBlur = 0;
       } else {
         ctx.fillStyle = fromBottom >= DOT_ROWS-2 ? '#1a0505' : '#051205';
-        ctx.fillRect(cx, cy, dotSize, rowH * 0.8);
+        roundRect(ctx, cx, cy, dotSize, rowH * 0.8, 1);
+        ctx.fill();
       }
     }
   }
