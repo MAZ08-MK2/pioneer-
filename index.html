@@ -3,1091 +3,949 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Pioneer DEQ-7200</title>
+<title>Pioneer DEQ Stack</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@500;700&display=swap');
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+*{margin:0;padding:0;box-sizing:border-box;}
 
-html, body {
-  width: 100%; height: 100%;
-  background: #111;
-  overflow: hidden;
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Share Tech Mono', monospace;
+html,body{
+  width:100%;height:100%;
+  background:#111;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  touch-action:manipulation;
 }
 
-/* ===== OUTER UNIT ===== */
-.unit {
-  width: 100vw;
-  height: 100vh;
-  background: linear-gradient(180deg, #1a1a1a 0%, #0e0e0e 40%, #080808 100%);
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  border-top: 2px solid #333;
-  border-bottom: 2px solid #000;
-  overflow: hidden;
+/* ============================================================
+   SHARED
+   ============================================================ */
+.unit{
+  width:100vw;
+  position:relative;
+  overflow:hidden;
+  flex-shrink:0;
 }
 
-/* brushed metal top edge */
-.unit::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #222, #555, #888, #555, #333, #555, #888, #555, #222);
+/* ============================================================
+   UNIT 1 — Pioneer DEQ-7200  (black)
+   ============================================================ */
+#u1{
+  height:50vh;
+  background:linear-gradient(180deg,#1c1c1c 0%,#101010 50%,#0a0a0a 100%);
+  border-bottom:2px solid #000;
+  display:flex;
+  flex-direction:column;
+}
+/* brushed-metal top strip */
+#u1::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,#1a1a1a,#4a4a4a,#888,#4a4a4a,#2a2a2a,#4a4a4a,#888,#4a4a4a,#1a1a1a);
 }
 
-/* ===== TOP LABEL BAR ===== */
-.top-bar {
-  display: flex;
-  align-items: center;
-  padding: 3px 10px 2px;
-  background: linear-gradient(180deg, #1e1e1e 0%, #141414 100%);
-  border-bottom: 1px solid #000;
-  flex-shrink: 0;
-  gap: 0;
-  height: 28px;
+/* --- U1 TOP BAR --- */
+.u1-top{
+  display:flex;align-items:center;
+  padding:1px 8px 0;
+  background:linear-gradient(180deg,#1e1e1e,#131313);
+  border-bottom:1px solid #000;
+  height:18px;flex-shrink:0;
+}
+.u1-logo{
+  font-family:'Orbitron',monospace;font-size:9px;font-weight:900;
+  color:#bbb;letter-spacing:3px;margin-right:5px;
+}
+.u1-logo span{color:#888;font-size:7px;margin-right:2px;}
+.u1-modelname{font-family:'Share Tech Mono',monospace;font-size:7px;color:#555;letter-spacing:1px;flex:1;}
+.u1-dsp{font-family:'Orbitron',monospace;font-size:11px;font-weight:900;color:#999;letter-spacing:2px;}
+
+/* --- U1 SOUNDFIELD BAR --- */
+.u1-sf{
+  display:flex;align-items:center;
+  padding:0 8px;height:13px;flex-shrink:0;
+  background:#0c0c0c;border-bottom:1px solid #000;gap:0;
+}
+.sfl{
+  font-family:'Share Tech Mono',monospace;font-size:6px;
+  color:#3a3a3a;letter-spacing:1px;padding:0 5px;
+  border-right:1px solid #1a1a1a;white-space:nowrap;
+}
+.sfl.on{color:#00cc55;text-shadow:0 0 5px #00ff66;}
+.sfl-sp{flex:1;}
+.u1-peak-lbl{font-family:'Share Tech Mono',monospace;font-size:6px;color:#441100;letter-spacing:1px;}
+.u1-peak-lbl.on{color:#ff3300;text-shadow:0 0 5px #ff4400;}
+
+/* --- U1 MAIN ROW --- */
+.u1-main{
+  flex:1;display:flex;flex-direction:row;
+  padding:2px 4px;gap:4px;overflow:hidden;
 }
 
-.pioneer-logo {
-  font-family: 'Orbitron', monospace;
-  font-size: 11px;
-  font-weight: 900;
-  color: #ccc;
-  letter-spacing: 3px;
-  margin-right: 6px;
-  text-shadow: 0 0 4px rgba(255,255,255,0.2);
+/* LEFT knobs */
+.u1-left{
+  width:46px;flex-shrink:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+}
+.klabel{font-family:'Share Tech Mono',monospace;font-size:5px;color:#444;letter-spacing:1px;text-align:center;line-height:1.3;}
+.knob{
+  border-radius:50%;
+  background:radial-gradient(circle at 36% 30%,#3a3a3a,#1a1a1a 60%,#080808);
+  border:1.5px solid #252525;
+  box-shadow:0 2px 5px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.04);
+  position:relative;cursor:pointer;flex-shrink:0;
+}
+.knob::after{
+  content:'';position:absolute;
+  background:#777;border-radius:1px;
+  top:3px;left:50%;transform:translateX(-50%);
+}
+.kbig{width:30px;height:30px;}
+.kbig::after{width:2px;height:9px;}
+.ksm{width:18px;height:18px;}
+.ksm::after{width:1.5px;height:5px;}
+.vlabel{font-family:'Share Tech Mono',monospace;font-size:6px;color:#555;letter-spacing:1px;}
+
+/* CENTER eq */
+.u1-eq{
+  flex:1;display:flex;flex-direction:column;
+  background:#060806;
+  border:1px solid #181818;border-radius:2px;overflow:hidden;position:relative;
+}
+/* green LED ambient */
+.u1-eq::after{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:5;
+  background:radial-gradient(ellipse at 50% 40%,rgba(0,200,60,.06) 0%,transparent 70%);
+}
+.u1-canvas-wrap{flex:1;position:relative;overflow:hidden;}
+#c1{width:100%;height:100%;display:block;}
+.u1-freqrow{
+  display:flex;padding:0 3px 1px;background:#050705;flex-shrink:0;height:10px;
+}
+.fq{
+  font-family:'Share Tech Mono',monospace;font-size:5.5px;
+  color:#243324;text-align:center;flex:1;
+}
+.fq.bright{color:#3a5a3a;}
+
+/* RIGHT panel */
+.u1-right{
+  width:90px;flex-shrink:0;
+  display:flex;flex-direction:column;gap:3px;
+}
+.seg7{
+  background:#000;border:1px solid #0e0e0e;border-radius:2px;
+  padding:2px 4px;display:flex;flex-direction:column;align-items:flex-end;
+  position:relative;overflow:hidden;flex-shrink:0;
+}
+.seg7::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 65% 40%,rgba(255,30,0,.07) 0%,transparent 70%);
+}
+.seg-num{
+  font-family:'Share Tech Mono',monospace;font-size:26px;font-weight:400;
+  color:#ff2200;line-height:1;letter-spacing:-2px;
+  text-shadow:0 0 6px #ff4400,0 0 12px rgba(255,60,0,.5);
+}
+.seg-unit{font-family:'Share Tech Mono',monospace;font-size:6px;color:#661100;letter-spacing:1px;margin-top:1px;}
+.minivu{
+  background:#000;border:1px solid #0e0e0e;border-radius:2px;
+  padding:2px 4px;flex-shrink:0;
+}
+.mvlabel{font-family:'Share Tech Mono',monospace;font-size:5px;color:#333;letter-spacing:1px;margin-bottom:1px;}
+.mvbar{display:flex;gap:1px;}
+.mvseg{width:4px;height:5px;border-radius:.5px;background:#081008;}
+.mvseg.g{background:#00cc44;box-shadow:0 0 3px #00ff55;}
+.mvseg.y{background:#ccaa00;box-shadow:0 0 3px #ffcc00;}
+.mvseg.r{background:#cc0022;box-shadow:0 0 3px #ff0033;}
+.u1-rknobs{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;}
+.rkitem{display:flex;flex-direction:column;align-items:center;gap:1px;}
+
+/* --- U1 BOTTOM BAR --- */
+.u1-bot{
+  display:flex;align-items:center;
+  padding:2px 6px;height:20px;flex-shrink:0;
+  background:linear-gradient(180deg,#111,#0c0c0c);
+  border-top:1px solid #000;gap:3px;
+}
+.bbt{
+  background:linear-gradient(180deg,#191919,#101010);
+  border:1px solid #252525;border-radius:2px;
+  font-family:'Share Tech Mono',monospace;font-size:5.5px;
+  color:#444;letter-spacing:.5px;padding:1px 4px;
+  cursor:pointer;white-space:nowrap;flex-shrink:0;line-height:1.2;text-align:center;
+}
+.bbt.on{color:#00dd55;border-color:#1a4a2a;text-shadow:0 0 4px #00ff66;background:linear-gradient(180deg,#061208,#030a04);}
+.bbt.fn{color:#666;font-size:6px;border-color:#2a2a2a;padding:1px 5px;}
+.bbt.fn.on{color:#ffcc00;border-color:#554400;text-shadow:0 0 4px #ffee00;background:linear-gradient(180deg,#151000,#0a0800);}
+.bbt-sp{flex:1;}
+
+/* ============================================================
+   UNIT 2 — Carrozzeria DEQ-900  (dark grey)
+   ============================================================ */
+#u2{
+  height:50vh;
+  background:linear-gradient(180deg,#2a2a2a 0%,#1e1e1e 30%,#181818 100%);
+  border-top:1px solid #3a3a3a;
+  display:flex;flex-direction:column;
+}
+/* slight texture */
+#u2::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,#252525,#555,#252525);
 }
 
-.pioneer-logo::before {
-  content: '⊕ ';
-  color: #aaa;
-  font-size: 9px;
+/* --- U2 TOP BAR --- */
+.u2-top{
+  display:flex;align-items:center;
+  padding:1px 8px 0;height:18px;flex-shrink:0;
+  background:linear-gradient(180deg,#252525,#1a1a1a);
+  border-bottom:1px solid #111;gap:6px;
+}
+.u2-dsp-badge{font-family:'Share Tech Mono',monospace;font-size:7px;color:#448;letter-spacing:2px;}
+.u2-carro{
+  font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;
+  color:#5af;letter-spacing:1px;
+  text-shadow:0 0 8px rgba(80,160,255,.4);
+}
+.u2-modelname{font-family:'Share Tech Mono',monospace;font-size:6.5px;color:#446;letter-spacing:1px;flex:1;}
+.u2-pioneer{font-family:'Orbitron',monospace;font-size:6px;color:#446;letter-spacing:2px;}
+.u2-dsp-r{font-family:'Orbitron',monospace;font-size:9px;font-weight:700;color:#557;letter-spacing:2px;}
+
+/* --- U2 SOUNDFIELD SIDE LABELS --- */
+/* U2 main is row: left-labels | eq-center | right-panel */
+.u2-main{
+  flex:1;display:flex;flex-direction:row;
+  padding:2px 4px;gap:3px;overflow:hidden;
+}
+.u2-left{
+  width:52px;flex-shrink:0;
+  display:flex;flex-direction:column;gap:2px;
+}
+.u2-topleft{
+  display:flex;flex-direction:column;gap:2px;margin-bottom:3px;
+}
+.u2-knobrow{display:flex;gap:4px;align-items:center;}
+.u2-sflabels{
+  flex:1;display:flex;flex-direction:column;justify-content:space-around;
+}
+.u2-sfl{
+  font-family:'Share Tech Mono',monospace;font-size:5.5px;
+  color:#334;letter-spacing:1px;padding:1px 3px;
+  border-left:2px solid #223;
+}
+.u2-sfl.on{color:#00ccff;text-shadow:0 0 5px #00eeff;border-left-color:#00aacc;}
+
+/* CENTER eq2 */
+.u2-eq{
+  flex:1;display:flex;flex-direction:column;
+  background:#030508;
+  border:1px solid #151520;border-radius:2px;overflow:hidden;position:relative;
+}
+.u2-eq::after{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:5;
+  background:radial-gradient(ellipse at 50% 35%,rgba(0,160,220,.05) 0%,transparent 70%);
+}
+.u2-canvas-wrap{flex:1;position:relative;overflow:hidden;}
+#c2{width:100%;height:100%;display:block;}
+.u2-freqrow{
+  display:flex;padding:0 2px 1px;background:#020407;flex-shrink:0;height:10px;
+}
+.fq2{
+  font-family:'Share Tech Mono',monospace;font-size:4.5px;
+  color:#1a2030;text-align:center;flex:1;white-space:nowrap;overflow:hidden;
+}
+.fq2.bright{color:#2a3a50;}
+
+/* RIGHT panel u2 */
+.u2-right{
+  width:80px;flex-shrink:0;
+  display:flex;flex-direction:column;gap:3px;align-items:flex-end;
+}
+.seg7b{
+  background:#000;border:1px solid #0d0d18;border-radius:2px;
+  padding:2px 4px;display:flex;flex-direction:column;align-items:flex-end;
+  position:relative;overflow:hidden;flex-shrink:0;width:100%;
+}
+.seg7b::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 65% 40%,rgba(0,100,200,.08) 0%,transparent 70%);
+}
+.seg-num2{
+  font-family:'Share Tech Mono',monospace;font-size:22px;font-weight:400;
+  color:#00aaff;line-height:1;letter-spacing:-1px;
+  text-shadow:0 0 6px #0088ff,0 0 12px rgba(0,100,255,.4);
+}
+.seg-unit2{font-family:'Share Tech Mono',monospace;font-size:5.5px;color:#003366;letter-spacing:1px;margin-top:1px;}
+.u2-minivu{
+  background:#000;border:1px solid #0d0d18;border-radius:2px;
+  padding:2px 4px;width:100%;flex-shrink:0;
+}
+.u2-mvbar{display:flex;gap:1px;}
+.u2-mvseg{width:3.5px;height:5px;border-radius:.5px;background:#040608;}
+.u2-mvseg.g{background:#00ccaa;box-shadow:0 0 3px #00ffcc;}
+.u2-mvseg.y{background:#0088ff;box-shadow:0 0 3px #00aaff;}
+.u2-mvseg.r{background:#ff4400;box-shadow:0 0 3px #ff6600;}
+.u2-dsp-box{
+  background:#000;border:1px solid #111122;border-radius:2px;
+  padding:3px 5px;width:100%;flex:1;
+  display:flex;flex-direction:column;align-items:flex-end;justify-content:space-around;
+}
+.u2-dsp-label{font-family:'Orbitron',monospace;font-size:9px;font-weight:700;color:#336;letter-spacing:2px;}
+.u2-right-btn{
+  background:linear-gradient(180deg,#181820,#101018);
+  border:1px solid #202030;border-radius:2px;
+  font-family:'Share Tech Mono',monospace;font-size:5px;color:#335;
+  letter-spacing:1px;padding:1px 4px;cursor:pointer;
 }
 
-.model-name {
-  font-size: 8px;
-  color: #666;
-  letter-spacing: 1px;
-  margin-right: auto;
+/* --- U2 BOTTOM BAR --- */
+.u2-bot{
+  display:flex;align-items:center;
+  padding:2px 6px;height:20px;flex-shrink:0;
+  background:linear-gradient(180deg,#1a1a1a,#141414);
+  border-top:1px solid #111;gap:3px;
+}
+.bbt2{
+  background:linear-gradient(180deg,#1e1e20,#141416);
+  border:1px solid #2a2a35;border-radius:2px;
+  font-family:'Share Tech Mono',monospace;font-size:5.5px;
+  color:#334;letter-spacing:.5px;padding:1px 5px;
+  cursor:pointer;white-space:nowrap;flex-shrink:0;
+}
+.bbt2.on{color:#00ccff;border-color:#114455;text-shadow:0 0 4px #00eeff;background:linear-gradient(180deg,#021014,#01080c);}
+.pos-btn{
+  background:linear-gradient(180deg,#002200,#001800);
+  border:1px solid #005500;border-radius:2px;
+  font-family:'Share Tech Mono',monospace;font-size:5.5px;
+  color:#00aa33;letter-spacing:1px;padding:1px 6px;
+  text-shadow:0 0 4px #00ff44;box-shadow:0 0 6px rgba(0,180,50,.15);
 }
 
-.dsp-badge {
-  font-family: 'Orbitron', monospace;
-  font-size: 14px;
-  font-weight: 900;
-  color: #bbb;
-  letter-spacing: 2px;
-  margin-left: 8px;
+/* ============================================================
+   PASSCODE OVERLAY
+   ============================================================ */
+.overlay{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.93);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  z-index:500;gap:8px;
 }
-
-/* ===== SOUND FIELD LABELS ===== */
-.soundfield-bar {
-  display: flex;
-  align-items: center;
-  padding: 1px 8px;
-  background: #0d0d0d;
-  border-bottom: 1px solid #000;
-  gap: 4px;
-  flex-shrink: 0;
-  height: 16px;
-  overflow: hidden;
+.ov-logos{display:flex;flex-direction:column;align-items:center;gap:3px;}
+.ov-l1{font-family:'Orbitron',monospace;font-size:14px;font-weight:900;color:#ccc;letter-spacing:5px;}
+.ov-l2{font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;color:#5af;letter-spacing:2px;text-shadow:0 0 8px rgba(80,160,255,.4);}
+.ov-sub{font-family:'Share Tech Mono',monospace;font-size:7px;color:#444;letter-spacing:3px;margin-top:2px;}
+.pc-label{font-family:'Share Tech Mono',monospace;font-size:8px;color:#446;letter-spacing:3px;margin-top:4px;}
+.pc-dots{display:flex;gap:12px;margin:4px 0 2px;}
+.pc-dot{
+  width:12px;height:12px;border-radius:50%;
+  border:1px solid #336;background:transparent;
+  transition:background .1s,box-shadow .1s;
 }
-
-.sf-label {
-  font-size: 7px;
-  color: #555;
-  letter-spacing: 1px;
-  white-space: nowrap;
-  padding: 0 4px;
-  border-right: 1px solid #222;
+.pc-dot.filled{background:#00ff66;box-shadow:0 0 8px #00ff66;border-color:#00cc44;}
+.pc-keypad{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:5px;margin-top:6px;
 }
-
-.sf-label.active {
-  color: #00cc55;
-  text-shadow: 0 0 4px #00ff66;
+.pc-key{
+  background:linear-gradient(180deg,#1a1a1a,#0e0e0e);
+  border:1px solid #2a2a2a;border-radius:3px;
+  color:#aaa;font-family:'Orbitron',monospace;font-size:14px;font-weight:700;
+  width:50px;height:36px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .1s;
+  box-shadow:0 2px 4px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.04);
+  -webkit-tap-highlight-color:transparent;
 }
-
-.sf-spacer { flex: 1; }
-
-/* ===== MAIN SECTION ===== */
-.main {
-  flex: 1;
-  display: flex;
-  flex-direction: row;
-  overflow: hidden;
-  padding: 4px 6px;
-  gap: 6px;
+.pc-key:active{
+  background:linear-gradient(180deg,#002210,#001108);
+  border-color:#00aa44;color:#00ff66;
+  box-shadow:0 0 10px rgba(0,255,100,.3);
 }
-
-/* ===== LEFT CONTROLS ===== */
-.left-ctrl {
-  width: 52px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  flex-shrink: 0;
+.pc-key.del{font-family:'Share Tech Mono',monospace;font-size:9px;color:#555;}
+.pc-err{
+  font-family:'Share Tech Mono',monospace;font-size:8px;
+  color:#cc2200;letter-spacing:2px;height:12px;
+  text-shadow:0 0 4px #ff2200;
 }
-
-.vol-knob-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-}
-
-.vol-label {
-  font-size: 7px;
-  color: #555;
-  letter-spacing: 1px;
-}
-
-.knob {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 38% 32%, #444, #1a1a1a 60%, #0a0a0a);
-  border: 2px solid #2a2a2a;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.04);
-  position: relative;
-  cursor: pointer;
-}
-
-.knob::after {
-  content: '';
-  position: absolute;
-  width: 2px; height: 11px;
-  background: #888;
-  border-radius: 1px;
-  top: 3px; left: 50%;
-  transform: translateX(-50%);
-}
-
-.knob-sm {
-  width: 22px;
-  height: 22px;
-}
-
-.knob-sm::after {
-  height: 7px;
-  top: 2px;
-}
-
-.sf-ctrl-label {
-  font-size: 6px;
-  color: #444;
-  letter-spacing: 1px;
-  text-align: center;
-  line-height: 1.2;
-}
-
-/* ===== CENTER: EQ DISPLAY ===== */
-.eq-center {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  background: #080808;
-  border: 1px solid #1a1a1a;
-  border-radius: 3px;
-  overflow: hidden;
-  position: relative;
-}
-
-/* Inner bezel / screen area */
-.screen-bezel {
-  flex: 1;
-  background: #020402;
-  margin: 3px;
-  border: 1px solid #111;
-  border-radius: 2px;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  position: relative;
-}
-
-/* Subtle green ambient glow of LED display */
-.screen-bezel::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at 50% 40%, rgba(0,180,60,0.07) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 5;
-}
-
-.eq-canvas-wrap {
-  flex: 1;
-  position: relative;
-  overflow: hidden;
-}
-
-canvas { width: 100%; height: 100%; display: block; }
-
-/* Frequency labels row */
-.freq-row {
-  display: flex;
-  padding: 0 4px 2px;
-  background: #020402;
-  flex-shrink: 0;
-}
-
-.freq-cell {
-  font-size: 6.5px;
-  color: #335533;
-  text-align: center;
-  flex: 1;
-  letter-spacing: 0;
-}
-
-.freq-cell.bright { color: #447744; }
-
-/* ===== RIGHT PANEL ===== */
-.right-panel {
-  width: 120px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  flex-shrink: 0;
-}
-
-/* 7-segment number display */
-.seg-display {
-  background: #000;
-  border: 1px solid #111;
-  border-radius: 2px;
-  padding: 4px 6px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  flex-shrink: 0;
-  position: relative;
-  overflow: hidden;
-}
-
-.seg-display::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at 60% 40%, rgba(255,30,0,0.06) 0%, transparent 70%);
-}
-
-.seg-number {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 32px;
-  font-weight: 400;
-  color: #ff2200;
-  text-shadow:
-    0 0 6px #ff4400,
-    0 0 12px rgba(255,60,0,0.5),
-    0 0 20px rgba(255,30,0,0.3);
-  line-height: 1;
-  letter-spacing: -2px;
-  font-variant-numeric: tabular-nums;
-}
-
-.seg-unit {
-  font-size: 8px;
-  color: #882200;
-  letter-spacing: 1px;
-  margin-top: 1px;
-}
-
-/* VOL / BAL display */
-.vol-display {
-  background: #000;
-  border: 1px solid #111;
-  border-radius: 2px;
-  padding: 3px 5px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-shrink: 0;
-}
-
-.vol-bar-wrap {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.mini-bar-label {
-  font-size: 6px;
-  color: #444;
-  letter-spacing: 1px;
-  margin-bottom: 1px;
-}
-
-.mini-bar {
-  display: flex;
-  gap: 1px;
-  align-items: flex-end;
-}
-
-.mini-seg {
-  width: 4px;
-  height: 6px;
-  border-radius: 0.5px;
-  background: #0a1a0a;
-}
-
-.mini-seg.lit { background: #00cc44; box-shadow: 0 0 3px #00ff55; }
-.mini-seg.lit-y { background: #ccaa00; box-shadow: 0 0 3px #ffcc00; }
-.mini-seg.lit-r { background: #cc0022; box-shadow: 0 0 3px #ff0033; }
-
-/* Right knob column */
-.right-knobs {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  align-items: center;
-  justify-content: center;
-}
-
-.rk-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-}
-
-.rk-label {
-  font-size: 6px;
-  color: #444;
-  letter-spacing: 1px;
-  text-align: center;
-  text-transform: uppercase;
-}
-
-/* ===== BOTTOM BAR ===== */
-.bottom-bar {
-  display: flex;
-  align-items: center;
-  padding: 3px 8px;
-  background: linear-gradient(180deg, #111 0%, #0d0d0d 100%);
-  border-top: 1px solid #000;
-  gap: 4px;
-  flex-shrink: 0;
-  height: 26px;
-}
-
-.bb-btn {
-  background: linear-gradient(180deg, #1a1a1a, #111);
-  border: 1px solid #2a2a2a;
-  border-radius: 2px;
-  color: #555;
-  font-size: 7px;
-  letter-spacing: 1px;
-  padding: 2px 6px;
-  cursor: pointer;
-  white-space: nowrap;
-  font-family: 'Share Tech Mono', monospace;
-  position: relative;
-}
-
-.bb-btn::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  background: rgba(255,255,255,0.05);
-}
-
-.bb-btn.active {
-  color: #00dd55;
-  border-color: #225533;
-  text-shadow: 0 0 4px #00ff66;
-  background: linear-gradient(180deg, #0a1a0e, #060d08);
-}
-
-.bb-btn.fn {
-  color: #888;
-  font-size: 8px;
-  border-color: #333;
-  padding: 2px 8px;
-}
-
-.bb-btn.fn.active {
-  color: #ffcc00;
-  border-color: #665500;
-  text-shadow: 0 0 4px #ffee00;
-  background: linear-gradient(180deg, #1a1400, #0d0a00);
-}
-
-.bb-spacer { flex: 1; }
-
-.bb-label {
-  font-size: 7px;
-  color: #333;
-  letter-spacing: 1px;
-}
-
-/* OVERLAY */
-.overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.92);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 200;
-  gap: 12px;
-  cursor: pointer;
-}
-
-.ov-logo {
-  font-family: 'Orbitron', monospace;
-  font-size: 22px;
-  font-weight: 900;
-  color: #ccc;
-  letter-spacing: 6px;
-  text-shadow: 0 0 10px rgba(255,255,255,0.2);
-}
-
-.ov-model {
-  font-size: 10px;
-  color: #555;
-  letter-spacing: 3px;
-}
-
-.ov-btn {
-  background: transparent;
-  border: 1px solid #00cc44;
-  color: #00dd55;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 3px;
-  padding: 8px 24px;
-  cursor: pointer;
-  text-shadow: 0 0 6px #00ff66;
-  box-shadow: 0 0 12px rgba(0,200,60,0.2);
-  margin-top: 4px;
-}
-
-.ov-err {
-  font-size: 9px;
-  color: #cc2200;
-  letter-spacing: 2px;
-  display: none;
-}
-
-/* PASSCODE */
-.passcode-dots {
-  display: flex;
-  gap: 14px;
-  margin: 6px 0 2px;
-}
-
-.pc-dot {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  border: 1px solid #00aa44;
-  background: transparent;
-  transition: background 0.1s, box-shadow 0.1s;
-}
-
-.pc-dot.filled {
-  background: #00ff66;
-  box-shadow: 0 0 8px #00ff66;
-}
-
-.pc-keypad {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
-  margin-top: 8px;
-}
-
-.pc-key {
-  background: linear-gradient(180deg, #1a1a1a, #0e0e0e);
-  border: 1px solid #2a2a2a;
-  border-radius: 3px;
-  color: #aaa;
-  font-family: 'Orbitron', monospace;
-  font-size: 16px;
-  font-weight: 700;
-  width: 54px;
-  height: 40px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.1s;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.04);
-  -webkit-tap-highlight-color: transparent;
-}
-
-.pc-key:active {
-  background: linear-gradient(180deg, #002210, #001108);
-  border-color: #00aa44;
-  color: #00ff66;
-  box-shadow: 0 0 10px rgba(0,255,100,0.3);
-}
-
-.pc-key.del {
-  font-size: 11px;
-  letter-spacing: 0;
-  color: #666;
-}
-
-.pc-err-msg {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 9px;
-  color: #cc2200;
-  letter-spacing: 2px;
-  height: 14px;
-  text-shadow: 0 0 4px #ff2200;
-}
-
-@keyframes shake {
-  0%,100% { transform: translateX(0); }
-  20% { transform: translateX(-8px); }
-  40% { transform: translateX(8px); }
-  60% { transform: translateX(-6px); }
-  80% { transform: translateX(6px); }
-}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
 </style>
 </head>
 <body>
 
-<div class="unit">
-
-  <!-- OVERLAY: PASSCODE -->
-  <div class="overlay" id="overlay">
-    <div class="ov-logo">⊕ PIONEER</div>
-    <div class="ov-model">DSP AUDIO PROCESSOR DEQ-7200</div>
-    <div style="margin-top:4px; font-family:'Share Tech Mono',monospace; font-size:9px; color:#445; letter-spacing:2px;">SECURITY CODE</div>
-    <div class="passcode-dots" id="pcDots">
-      <div class="pc-dot" id="dot0"></div>
-      <div class="pc-dot" id="dot1"></div>
-      <div class="pc-dot" id="dot2"></div>
-      <div class="pc-dot" id="dot3"></div>
-    </div>
-    <div class="pc-err-msg" id="pcErr"></div>
-    <div class="pc-keypad" id="pcKeypad">
-      <button class="pc-key" onclick="pcInput('1')">1</button>
-      <button class="pc-key" onclick="pcInput('2')">2</button>
-      <button class="pc-key" onclick="pcInput('3')">3</button>
-      <button class="pc-key" onclick="pcInput('4')">4</button>
-      <button class="pc-key" onclick="pcInput('5')">5</button>
-      <button class="pc-key" onclick="pcInput('6')">6</button>
-      <button class="pc-key" onclick="pcInput('7')">7</button>
-      <button class="pc-key" onclick="pcInput('8')">8</button>
-      <button class="pc-key" onclick="pcInput('9')">9</button>
-      <button class="pc-key del" onclick="pcDel()">DEL</button>
-      <button class="pc-key" onclick="pcInput('0')">0</button>
-      <button class="pc-key del" onclick="pcClear()">CLR</button>
-    </div>
-    <div class="ov-err" id="errMsg">ERROR: MIC ACCESS DENIED</div>
+<!-- ====== PASSCODE OVERLAY ====== -->
+<div class="overlay" id="overlay">
+  <div class="ov-logos">
+    <div class="ov-l1">⊕ PIONEER</div>
+    <div class="ov-l2">carrozzeria</div>
   </div>
-
-  <!-- TOP LABEL BAR -->
-  <div class="top-bar">
-    <span class="pioneer-logo">PIONEER</span>
-    <span class="model-name">DSP AUDIO PROCESSOR DEQ-7200</span>
-    <span class="dsp-badge">DSP</span>
+  <div class="ov-sub">DUAL DSP AUDIO PROCESSOR STACK</div>
+  <div class="pc-label">SECURITY CODE</div>
+  <div class="pc-dots" id="pcDots">
+    <div class="pc-dot" id="d0"></div>
+    <div class="pc-dot" id="d1"></div>
+    <div class="pc-dot" id="d2"></div>
+    <div class="pc-dot" id="d3"></div>
   </div>
-
-  <!-- SOUND FIELD LABELS -->
-  <div class="soundfield-bar">
-    <div class="sf-label" style="color:#555">🎧</div>
-    <div class="sf-label active" id="sf-studio">STUDIO</div>
-    <div class="sf-label" id="sf-club">CLUB</div>
-    <div class="sf-label" id="sf-line">LINE</div>
-    <div class="sf-label" id="sf-house">HOUSE</div>
-    <div class="sf-label" id="sf-rock">ROCK</div>
-    <div class="sf-label" id="sf-pops">POPS</div>
-    <div class="sf-label" id="sf-vocal">VOCAL</div>
-    <div class="sf-label" id="sf-jazz">JAZZ</div>
-    <div class="sf-label" id="sf-u1">USER1</div>
-    <div class="sf-label" id="sf-u2">USER2</div>
-    <div class="sf-label" id="sf-u3">USER3</div>
-    <div class="sf-label" id="sf-u4">USER4</div>
-    <div class="sf-spacer"></div>
-    <div class="sf-label" style="color:#cc4400; text-shadow: 0 0 4px #ff4400; border:none" id="peakLabel">PEAK</div>
+  <div class="pc-err" id="pcErr"></div>
+  <div class="pc-keypad">
+    <button class="pc-key" onclick="pcIn('1')">1</button>
+    <button class="pc-key" onclick="pcIn('2')">2</button>
+    <button class="pc-key" onclick="pcIn('3')">3</button>
+    <button class="pc-key" onclick="pcIn('4')">4</button>
+    <button class="pc-key" onclick="pcIn('5')">5</button>
+    <button class="pc-key" onclick="pcIn('6')">6</button>
+    <button class="pc-key" onclick="pcIn('7')">7</button>
+    <button class="pc-key" onclick="pcIn('8')">8</button>
+    <button class="pc-key" onclick="pcIn('9')">9</button>
+    <button class="pc-key del" onclick="pcDel()">DEL</button>
+    <button class="pc-key" onclick="pcIn('0')">0</button>
+    <button class="pc-key del" onclick="pcClr()">CLR</button>
   </div>
+  <div id="micErrMsg" style="font-family:'Share Tech Mono',monospace;font-size:7px;color:#cc2200;letter-spacing:2px;display:none;margin-top:4px;">ERROR: MIC ACCESS DENIED</div>
+</div>
 
-  <!-- MAIN -->
-  <div class="main">
-
-    <!-- LEFT CONTROLS -->
-    <div class="left-ctrl">
-      <div class="vol-knob-wrap">
-        <div class="sf-ctrl-label">SOUND<br>FIELD<br>CTRL</div>
-        <div class="knob knob-sm"></div>
-      </div>
-      <div class="vol-knob-wrap" style="margin-top:6px">
-        <div class="vol-label">VOLUME</div>
-        <div class="knob" style="width:38px;height:38px"></div>
-      </div>
+<!-- ====== UNIT 1: Pioneer DEQ-7200 ====== -->
+<div class="unit" id="u1">
+  <!-- top bar -->
+  <div class="u1-top">
+    <div class="u1-logo"><span>⊕</span>PIONEER</div>
+    <div class="u1-modelname">DSP AUDIO PROCESSOR DEQ-7200</div>
+    <div class="u1-dsp">DSP</div>
+  </div>
+  <!-- soundfield bar -->
+  <div class="u1-sf">
+    <div class="sfl" style="color:#333">🎧</div>
+    <div class="sfl on" id="s1-studio">STUDIO</div>
+    <div class="sfl" id="s1-club">CLUB</div>
+    <div class="sfl" id="s1-line">LINE</div>
+    <div class="sfl" id="s1-house">HOUSE</div>
+    <div class="sfl" id="s1-rock">ROCK</div>
+    <div class="sfl" id="s1-pops">POPS</div>
+    <div class="sfl" id="s1-vocal">VOCAL</div>
+    <div class="sfl" id="s1-jazz">JAZZ</div>
+    <div class="sfl" id="s1-u1" style="border-right:none">USER1</div>
+    <div class="sfl" id="s1-u2">USER2</div>
+    <div class="sfl" id="s1-u3">USER3</div>
+    <div class="sfl" id="s1-u4" style="border-right:none">USER4</div>
+    <div class="sfl-sp"></div>
+    <div class="u1-peak-lbl" id="pk1">PEAK</div>
+  </div>
+  <!-- main row -->
+  <div class="u1-main">
+    <!-- left knobs -->
+    <div class="u1-left">
+      <div class="klabel">SOUND<br>FIELD<br>CTRL</div>
+      <div class="knob ksm"></div>
+      <div style="height:4px"></div>
+      <div class="vlabel">VOLUME</div>
+      <div class="knob kbig"></div>
     </div>
-
-    <!-- CENTER EQ -->
-    <div class="eq-center">
-      <div class="screen-bezel">
-        <div class="eq-canvas-wrap">
-          <canvas id="eqCanvas"></canvas>
-        </div>
-        <div class="freq-row" id="freqRow"></div>
-      </div>
+    <!-- eq canvas -->
+    <div class="u1-eq">
+      <div class="u1-canvas-wrap"><canvas id="c1"></canvas></div>
+      <div class="u1-freqrow" id="fr1"></div>
     </div>
-
-    <!-- RIGHT PANEL -->
-    <div class="right-panel">
-      <!-- 7-seg number display -->
-      <div class="seg-display">
-        <div class="seg-number" id="segNumber">15</div>
+    <!-- right panel -->
+    <div class="u1-right">
+      <div class="seg7">
+        <div class="seg-num" id="sn1">35</div>
         <div class="seg-unit">VOL &nbsp; BAL</div>
       </div>
-
-      <!-- Mini bars -->
-      <div class="vol-display">
-        <div class="vol-bar-wrap">
-          <div class="mini-bar-label">L</div>
-          <div class="mini-bar" id="barL"></div>
-          <div class="mini-bar-label" style="margin-top:3px">R</div>
-          <div class="mini-bar" id="barR"></div>
-        </div>
+      <div class="minivu">
+        <div class="mvlabel">L</div><div class="mvbar" id="mv1L"></div>
+        <div class="mvlabel" style="margin-top:2px">R</div><div class="mvbar" id="mv1R"></div>
       </div>
-
-      <!-- Knobs -->
-      <div class="right-knobs">
-        <div class="rk-item">
-          <div class="rk-label">FADER<br>CONTROL</div>
-          <div class="knob knob-sm"></div>
-        </div>
-        <div class="rk-item">
-          <div class="rk-label">BALANCE<br>CONTROL</div>
-          <div class="knob knob-sm"></div>
-        </div>
-        <div class="rk-item">
-          <div class="rk-label">LEVEL</div>
-          <div class="knob knob-sm"></div>
-        </div>
+      <div class="u1-rknobs">
+        <div class="rkitem"><div class="klabel">FADER<br>CTRL</div><div class="knob ksm"></div></div>
+        <div class="rkitem"><div class="klabel">BALANCE<br>CTRL</div><div class="knob ksm"></div></div>
+        <div class="rkitem"><div class="klabel">LEVEL</div><div class="knob ksm"></div></div>
       </div>
     </div>
-
   </div>
+  <!-- bottom bar -->
+  <div class="u1-bot">
+    <div class="bbt on">SPECTRUM<br>ANALYZER</div>
+    <div class="bbt on">FACTORY<br>PRESET</div>
+    <div class="bbt fn on" onclick="setFn1('F1')" id="b1f1">●F1</div>
+    <div class="bbt fn" onclick="setFn1('F2')" id="b1f2">●F2</div>
+    <div class="bbt fn" onclick="setFn1('F3')" id="b1f3">▶F3</div>
+    <div class="bbt fn" onclick="setFn1('F4')" id="b1f4">▶F4</div>
+    <div style="width:3px"></div>
+    <div class="bbt fn" onclick="setFn1('U1')" id="b1u1" style="font-size:5px">U1</div>
+    <div class="bbt fn" onclick="setFn1('U2')" id="b1u2" style="font-size:5px">U2</div>
+    <div class="bbt fn" onclick="setFn1('U3')" id="b1u3" style="font-size:5px">U3</div>
+    <div class="bbt fn" onclick="setFn1('U4')" id="b1u4" style="font-size:5px">U4</div>
+    <div class="bbt-sp"></div>
+    <div class="bbt fn" id="b1fr" onclick="document.getElementById('b1fr').classList.toggle('on')">FRONT/REAR</div>
+    <div class="bbt fn">Fr</div>
+    <div class="bbt fn" style="padding:1px 7px">P</div>
+    <div style="font-family:'Share Tech Mono',monospace;font-size:5px;color:#333;letter-spacing:1px">POSITION</div>
+  </div>
+</div>
 
-  <!-- BOTTOM BAR -->
-  <div class="bottom-bar">
-    <div class="bb-btn active" id="btnSA">SPECTRUM<br>ANALYZER</div>
-    <div style="width:4px"></div>
-    <div class="bb-btn active" id="btnFP">FACTORY<br>PRESET</div>
-    <div style="width:4px"></div>
-    <div class="bb-btn fn active" id="btnF1" onclick="setFn('F1')">●F1</div>
-    <div class="bb-btn fn" id="btnF2" onclick="setFn('F2')">●F2</div>
-    <div class="bb-btn fn" id="btnF3" onclick="setFn('F3')">▶F3</div>
-    <div class="bb-btn fn" id="btnF4" onclick="setFn('F4')">▶F4</div>
+<!-- ====== UNIT 2: Carrozzeria DEQ-900 ====== -->
+<div class="unit" id="u2">
+  <!-- top bar -->
+  <div class="u2-top">
+    <div class="u2-dsp-badge">DSP</div>
+    <div class="u2-carro">carrozzeria</div>
+    <div class="u2-modelname">DEQ-900 DIGITAL SIGNAL PROCESSOR</div>
+    <div class="u2-pioneer">⊕ PIONEER</div>
     <div style="width:6px"></div>
-    <div class="bb-btn fn" id="btnU1" onclick="setFn('U1')" style="font-size:7px">U1</div>
-    <div class="bb-btn fn" id="btnU2" onclick="setFn('U2')" style="font-size:7px">U2</div>
-    <div class="bb-btn fn" id="btnU3" onclick="setFn('U3')" style="font-size:7px">U3</div>
-    <div class="bb-btn fn" id="btnU4" onclick="setFn('U4')" style="font-size:7px">U4</div>
-    <div class="bb-spacer"></div>
-    <div class="bb-btn" onclick="toggleMode()" id="btnFR">FRONT/REAR</div>
-    <div style="width:4px"></div>
-    <div class="bb-btn" style="color:#888;border-color:#333">Fr</div>
-    <div style="width:4px"></div>
-    <div class="bb-btn" style="color:#888;border-color:#333;padding:2px 10px">P</div>
-    <div class="bb-label">POSITION</div>
+    <div class="u2-dsp-r">DSP</div>
   </div>
-
+  <!-- main row -->
+  <div class="u2-main">
+    <!-- left: knobs + soundfield labels -->
+    <div class="u2-left">
+      <div class="u2-topleft">
+        <div style="font-family:'Share Tech Mono',monospace;font-size:4.5px;color:#335;letter-spacing:1px;margin-bottom:1px">FM&nbsp;&nbsp;AM</div>
+        <div class="u2-knobrow">
+          <div class="knob ksm" style="border-color:#223;background:radial-gradient(circle at 36% 30%,#2a2a35,#111118 60%,#050508)"></div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:4.5px;color:#335;letter-spacing:1px;line-height:1.4">FC<br>LEVEL</div>
+        </div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:4.5px;color:#335;letter-spacing:1px;margin-top:2px">SOUND FIELD CTRL</div>
+        <div class="knob ksm" style="border-color:#223;background:radial-gradient(circle at 36% 30%,#2a2a35,#111118 60%,#050508);margin-top:1px"></div>
+      </div>
+      <div class="u2-sflabels">
+        <div class="u2-sfl on" id="s2-studio">STUDIO</div>
+        <div class="u2-sfl" id="s2-concert">CONCERT</div>
+        <div class="u2-sfl" id="s2-jazz">JAZZ</div>
+        <div class="u2-sfl" id="s2-stadium">STADIUM</div>
+        <div class="u2-sfl" id="s2-classic">CLASSIC</div>
+        <div class="u2-sfl" id="s2-clear">CLEAR</div>
+      </div>
+    </div>
+    <!-- eq canvas 2 -->
+    <div class="u2-eq">
+      <div class="u2-canvas-wrap"><canvas id="c2"></canvas></div>
+      <div class="u2-freqrow" id="fr2"></div>
+    </div>
+    <!-- right panel -->
+    <div class="u2-right">
+      <div class="seg7b">
+        <div class="seg-num2" id="sn2">35</div>
+        <div class="seg-unit2">VOL &nbsp; SW</div>
+      </div>
+      <div class="u2-minivu">
+        <div class="mvlabel" style="font-family:'Share Tech Mono',monospace;font-size:4.5px;color:#225;letter-spacing:1px;margin-bottom:1px">L</div>
+        <div class="u2-mvbar" id="mv2L"></div>
+        <div class="mvlabel" style="font-family:'Share Tech Mono',monospace;font-size:4.5px;color:#225;letter-spacing:1px;margin-top:1px;margin-bottom:1px">R</div>
+        <div class="u2-mvbar" id="mv2R"></div>
+      </div>
+      <div class="u2-dsp-box">
+        <div class="u2-dsp-label">DSP</div>
+        <div class="u2-right-btn">RIGHT</div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:4.5px;color:#224;letter-spacing:1px">FRONT/REAR</div>
+      </div>
+    </div>
+  </div>
+  <!-- bottom bar -->
+  <div class="u2-bot">
+    <div style="font-family:'Share Tech Mono',monospace;font-size:5px;color:#335;letter-spacing:1px">VOLUME +</div>
+    <div style="width:6px"></div>
+    <div class="bbt2 on" id="b2f1" onclick="setFn2('F1')">F1</div>
+    <div class="bbt2" id="b2f2" onclick="setFn2('F2')">F2</div>
+    <div class="bbt2" id="b2f3" onclick="setFn2('F3')">F3</div>
+    <div class="bbt2" id="b2f4" onclick="setFn2('F4')">F4</div>
+    <div class="bbt2" id="b2f5" onclick="setFn2('F5')">F5</div>
+    <div style="width:4px"></div>
+    <div class="bbt2" id="b2u1" onclick="setFn2('U1')" style="font-size:4.5px">USER1</div>
+    <div class="bbt2" id="b2u2" onclick="setFn2('U2')" style="font-size:4.5px">USER2</div>
+    <div class="bbt2" id="b2u3" onclick="setFn2('U3')" style="font-size:4.5px">USER3</div>
+    <div class="bbt-sp"></div>
+    <div class="pos-btn">POSITION</div>
+  </div>
 </div>
 
 <script>
-// === PASSCODE ===
-const PASSCODE = '0310';
-let pcEntry = '';
-
-function pcInput(digit) {
-  if (pcEntry.length >= 4) return;
-  pcEntry += digit;
-  updateDots();
-  if (pcEntry.length === 4) {
-    setTimeout(checkPasscode, 150);
-  }
-}
-
-function pcDel() {
-  pcEntry = pcEntry.slice(0, -1);
-  updateDots();
-  document.getElementById('pcErr').textContent = '';
-}
-
-function pcClear() {
-  pcEntry = '';
-  updateDots();
-  document.getElementById('pcErr').textContent = '';
-}
-
-function updateDots() {
-  for (let i = 0; i < 4; i++) {
-    const dot = document.getElementById('dot' + i);
-    dot.classList.toggle('filled', i < pcEntry.length);
-  }
-}
-
-function checkPasscode() {
-  if (pcEntry === PASSCODE) {
-    // Correct — flash green then start
-    document.getElementById('pcDots').style.animation = 'none';
-    for (let i = 0; i < 4; i++) {
-      const dot = document.getElementById('dot' + i);
-      dot.style.background = '#00ff66';
-      dot.style.boxShadow = '0 0 12px #00ff66';
-    }
-    setTimeout(() => startAudio(), 400);
+/* =====================================================
+   PASSCODE
+   ===================================================== */
+const PASS='0310';let pcE='';
+function pcIn(d){if(pcE.length>=4)return;pcE+=d;upDots();if(pcE.length===4)setTimeout(chkPass,150);}
+function pcDel(){pcE=pcE.slice(0,-1);upDots();document.getElementById('pcErr').textContent='';}
+function pcClr(){pcE='';upDots();document.getElementById('pcErr').textContent='';}
+function upDots(){for(let i=0;i<4;i++)document.getElementById('d'+i).classList.toggle('filled',i<pcE.length);}
+function chkPass(){
+  if(pcE===PASS){
+    for(let i=0;i<4;i++){const d=document.getElementById('d'+i);d.style.background='#00ff66';d.style.boxShadow='0 0 10px #00ff66';}
+    setTimeout(startAudio,400);
   } else {
-    // Wrong — shake and clear
-    const dots = document.getElementById('pcDots');
-    dots.style.animation = 'shake 0.4s ease';
-    document.getElementById('pcErr').textContent = 'ACCESS DENIED';
-    for (let i = 0; i < 4; i++) {
-      const dot = document.getElementById('dot' + i);
-      dot.style.background = '#ff2200';
-      dot.style.boxShadow = '0 0 8px #ff2200';
-      dot.style.borderColor = '#ff2200';
-    }
-    setTimeout(() => {
-      dots.style.animation = '';
-      pcEntry = '';
-      updateDots();
-      for (let i = 0; i < 4; i++) {
-        const dot = document.getElementById('dot' + i);
-        dot.style.background = '';
-        dot.style.boxShadow = '';
-        dot.style.borderColor = '';
-      }
-      setTimeout(() => {
-        document.getElementById('pcErr').textContent = '';
-      }, 800);
-    }, 600);
+    const dots=document.getElementById('pcDots');
+    dots.style.animation='shake .4s ease';
+    document.getElementById('pcErr').textContent='ACCESS DENIED';
+    for(let i=0;i<4;i++){const d=document.getElementById('d'+i);d.style.background='#ff2200';d.style.boxShadow='0 0 8px #ff2200';d.style.borderColor='#ff2200';}
+    setTimeout(()=>{
+      dots.style.animation='';pcE='';upDots();
+      for(let i=0;i<4;i++){const d=document.getElementById('d'+i);d.style.background='';d.style.boxShadow='';d.style.borderColor='';}
+      setTimeout(()=>document.getElementById('pcErr').textContent='',600);
+    },600);
   }
 }
 
-// === AUDIO ===
-let audioCtx, analyser, source, stream;
-let isRunning = false;
-let animId;
+/* =====================================================
+   AUDIO ENGINE
+   ===================================================== */
+let audioCtx,analyser,src,stream,running=false;
 
-const FFT_SIZE = 2048;
-const NUM_BANDS = 28;
-
-// Reduced to 16 bands for wider bars
-const BAND_FREQS = [
-  20, 50, 100, 200, 400, 630, 1000, 1600,
-  2500, 4000, 6300, 8000, 10000, 12500, 16000, 20000
-];
-const SHOW_LABELS = [20, 50, 100, 200, 400, 1000, 2500, 6300, 10000, 16000];
-
-// Peak hold
-let peaks = new Array(BAND_FREQS.length).fill(0);
-let peakHold = new Array(BAND_FREQS.length).fill(0);
-const PEAK_HOLD = 45;
-
-// LED dot grid params
-const DOT_ROWS = 16; // rows of LED dots per bar
-const DOT_COLS = BAND_FREQS.length;
-
-// Canvas
-const canvas = document.getElementById('eqCanvas');
-const ctx2 = canvas.getContext('2d');
-
-function resizeCanvas() {
-  const p = canvas.parentElement;
-  canvas.width = p.clientWidth;
-  canvas.height = p.clientHeight;
+async function startAudio(){
+  try{
+    stream=await navigator.mediaDevices.getUserMedia({audio:true,video:false});
+    audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+    analyser=audioCtx.createAnalyser();
+    analyser.fftSize=2048;
+    analyser.smoothingTimeConstant=0.78;
+    src=audioCtx.createMediaStreamSource(stream);
+    src.connect(analyser);
+    running=true;
+    document.getElementById('overlay').style.display='none';
+    draw();
+  }catch(e){
+    document.getElementById('micErrMsg').style.display='block';
+  }
 }
 
-// Build freq labels
-function buildFreqLabels() {
-  const row = document.getElementById('freqRow');
-  row.innerHTML = '';
-  BAND_FREQS.forEach(f => {
-    const d = document.createElement('div');
-    d.className = 'freq-cell';
-    const show = SHOW_LABELS.includes(f);
-    if (show) {
-      d.textContent = f >= 1000 ? (f >= 10000 ? (f/1000)+'k' : (f/1000)+'k') : f;
-      d.classList.add('bright');
-    }
+function getBand(fd,sr,f1,f2){
+  const nyq=sr/2,n=fd.length;
+  const i1=Math.max(0,Math.floor(f1/nyq*n));
+  const i2=Math.min(n-1,Math.ceil(f2/nyq*n));
+  let s=0,c=0;for(let i=i1;i<=i2;i++){s+=fd[i];c++;}
+  return c?s/c/255:0;
+}
+
+/* =====================================================
+   UNIT 1 — Pioneer DEQ-7200
+   Green LED bars, 16 bands, wide dots
+   ===================================================== */
+const B1_FREQS=[20,50,100,200,315,500,800,1250,2000,3150,5000,8000,12500,16000,20000];
+// extra band count mapped tightly
+const B1_FREQS_FULL=[
+  20,31,50,80,125,200,315,500,800,1250,2000,3150,5000,8000,12500,20000
+];
+const B1_SHOW=[20,80,200,500,1250,3150,8000,20000];
+const DOT_ROWS1=14;
+let pk1=[],pkH1=[];
+
+const cv1=document.getElementById('c1');
+const cx1=cv1.getContext('2d');
+
+function resizeCv1(){const p=cv1.parentElement;cv1.width=p.clientWidth;cv1.height=p.clientHeight;}
+
+function buildFr1(){
+  const row=document.getElementById('fr1');row.innerHTML='';
+  B1_FREQS_FULL.forEach(f=>{
+    const d=document.createElement('div');d.className='fq';
+    if(B1_SHOW.includes(f)){d.textContent=f>=1000?(f/1000)+'k':f;d.classList.add('bright');}
     row.appendChild(d);
   });
 }
 
-// Build mini bars
-function buildMiniBars(id, count) {
-  const el = document.getElementById(id);
-  el.innerHTML = '';
-  for (let i = 0; i < count; i++) {
-    const d = document.createElement('div');
-    d.className = 'mini-seg';
-    el.appendChild(d);
-  }
+function buildMv(id,n,cls){
+  const el=document.getElementById(id);el.innerHTML='';
+  for(let i=0;i<n;i++){const d=document.createElement('div');d.className=cls;el.appendChild(d);}
 }
 
-// === START ===
-async function startAudio() {
-  try {
-    stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    analyser = audioCtx.createAnalyser();
-    analyser.fftSize = FFT_SIZE;
-    analyser.smoothingTimeConstant = 0.75;
-    source = audioCtx.createMediaStreamSource(stream);
-    source.connect(analyser);
-    isRunning = true;
-    document.getElementById('overlay').style.display = 'none';
-    draw();
-  } catch(e) {
-    document.getElementById('errMsg').style.display = 'block';
-  }
+function rr(ctx,x,y,w,h,r){
+  ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);
+  ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);
+  ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);
+  ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);
+  ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();
 }
 
-function getBandLevel(freqData, sampleRate, f1, f2) {
-  const nyq = sampleRate / 2;
-  const n = freqData.length;
-  const i1 = Math.max(0, Math.floor(f1 / nyq * n));
-  const i2 = Math.min(n - 1, Math.ceil(f2 / nyq * n));
-  let sum = 0, count = 0;
-  for (let i = i1; i <= i2; i++) { sum += freqData[i]; count++; }
-  return count > 0 ? sum / count / 255 : 0;
-}
+function drawU1(bands){
+  const W=cv1.width,H=cv1.height;
+  const nb=bands.length;
+  cx1.fillStyle='#030503';cx1.fillRect(0,0,W,H);
+  const margin=3,iW=W-margin*2,iH=H-margin*2;
+  const colW=iW/nb;
+  const dotSz=Math.min(colW*.80,iH/DOT_ROWS1*.80);
+  const gx=(colW-dotSz)/2;
+  const rowH=iH/DOT_ROWS1;
 
-// === DRAW ===
-function draw() {
-  animId = requestAnimationFrame(draw);
-  if (!analyser) return;
+  for(let col=0;col<nb;col++){
+    const v=bands[col];
+    const litR=Math.round(v*DOT_ROWS1);
+    const pkRow=DOT_ROWS1-1-Math.round(pk1[col]*(DOT_ROWS1-1));
+    const cx_=margin+col*colW+gx;
 
-  const W = canvas.width, H = canvas.height;
-  const freqData = new Uint8Array(analyser.frequencyBinCount);
-  analyser.getByteFrequencyData(freqData);
-  const sr = audioCtx.sampleRate;
+    for(let row=0;row<DOT_ROWS1;row++){
+      const cy_=margin+row*rowH+(rowH-dotSz)/2;
+      const fb=DOT_ROWS1-1-row;
+      const isLit=fb<litR;
+      const isPk=row===pkRow&&pk1[col]>0.02;
 
-  // Compute bands
-  const nBands = BAND_FREQS.length;
-  const bands = [];
-  for (let i = 0; i < nBands; i++) {
-    const flo = i === 0 ? 15 : Math.sqrt(BAND_FREQS[i] * BAND_FREQS[i-1]);
-    const fhi = i === nBands-1 ? 22000 : Math.sqrt(BAND_FREQS[i] * BAND_FREQS[i+1]);
-    // Slight boost for higher freqs (psychoacoustic)
-    let v = getBandLevel(freqData, sr, flo, fhi);
-    // Shelving boost for treble visibility
-    if (i > 18) v = Math.min(1, v * 1.4);
-    if (i > 22) v = Math.min(1, v * 1.3);
-    bands.push(v);
-  }
-
-  // Peak hold
-  for (let i = 0; i < nBands; i++) {
-    if (bands[i] >= peaks[i]) {
-      peaks[i] = bands[i];
-      peakHold[i] = PEAK_HOLD;
-    } else {
-      if (peakHold[i] > 0) peakHold[i]--;
-      else peaks[i] = Math.max(0, peaks[i] - 0.008);
-    }
-  }
-
-  // === DRAW LED DOT MATRIX ===
-  ctx2.clearRect(0, 0, W, H);
-  ctx2.fillStyle = '#020402';
-  ctx2.fillRect(0, 0, W, H);
-
-  const margin = 4;
-  const innerW = W - margin * 2;
-  const innerH = H - margin * 2;
-
-  const colW = innerW / nBands;
-  const dotSize = Math.min(colW * 0.80, innerH / DOT_ROWS * 0.78);
-  const dotGapX = (colW - dotSize) / 2;
-  const rowH = innerH / DOT_ROWS;
-
-  for (let col = 0; col < nBands; col++) {
-    const v = bands[col];
-    const litRows = Math.round(v * DOT_ROWS);
-    const peakRow = DOT_ROWS - 1 - Math.round(peaks[col] * (DOT_ROWS - 1));
-
-    const cx = margin + col * colW + dotGapX;
-
-    for (let row = 0; row < DOT_ROWS; row++) {
-      const cy = margin + row * rowH + (rowH - dotSize) / 2;
-      // row 0 = top, row DOT_ROWS-1 = bottom
-      const fromBottom = DOT_ROWS - 1 - row; // 0 = bottom
-
-      const isLit = fromBottom < litRows;
-      const isPeak = row === peakRow && peaks[col] > 0.02;
-
-      let color;
-      if (isLit || isPeak) {
-        // Color zones: top 2 rows = red/yellow, middle = yellow-green, bottom = bright green
-        if (fromBottom >= DOT_ROWS - 2) {
-          // Top 2: RED
-          color = isLit
-            ? { r: 255, g: 30, b: 0, glow: 'rgba(255,40,0,0.8)' }
-            : { r: 255, g: 160, b: 0, glow: 'rgba(255,180,0,0.9)' }; // peak = orange
-        } else if (fromBottom >= DOT_ROWS - 4) {
-          // rows 3-4 from top: YELLOW
-          color = { r: 220, g: 200, b: 0, glow: 'rgba(220,220,0,0.7)' };
-        } else {
-          // Bottom: GREEN (bright)
-          const brightness = 0.6 + (fromBottom / DOT_ROWS) * 0.4;
-          color = { r: 0, g: Math.floor(200 * brightness + 55), b: Math.floor(30 * brightness), glow: `rgba(0,${Math.floor(220*brightness)},50,0.7)` };
+      if(isLit||isPk){
+        let r,g,b,gl;
+        if(fb>=DOT_ROWS1-2){// top 2: RED
+          if(isLit){r=255;g=20;b=0;gl='rgba(255,30,0,.8)';}
+          else{r=255;g=140;b=0;gl='rgba(255,150,0,.9)';}
+        } else if(fb>=DOT_ROWS1-4){// yellow zone
+          r=210;g=190;b=0;gl='rgba(210,200,0,.7)';
+        } else {// green
+          const br=0.55+(fb/DOT_ROWS1)*.45;
+          r=0;g=Math.floor(190*br+60);b=Math.floor(25*br);
+          gl=`rgba(0,${Math.floor(210*br)},40,.7)`;
         }
-
-        // Draw dot (rounded rect)
-        const r = dotSize * 0.18;
-
-        // Glow
-        if (isLit) {
-          ctx2.shadowColor = color.glow;
-          ctx2.shadowBlur = dotSize * 1.2;
-        } else if (isPeak) {
-          ctx2.shadowColor = 'rgba(255,255,100,0.9)';
-          ctx2.shadowBlur = dotSize * 1.5;
-        }
-
-        ctx2.fillStyle = `rgb(${color.r},${color.g},${color.b})`;
-        roundRect(ctx2, cx, cy, dotSize, dotSize, r);
-        ctx2.fill();
-        ctx2.shadowBlur = 0;
-
-        // Specular highlight
-        ctx2.fillStyle = 'rgba(255,255,255,0.12)';
-        roundRect(ctx2, cx + dotSize*0.15, cy + dotSize*0.1, dotSize*0.4, dotSize*0.25, r*0.5);
-        ctx2.fill();
-
+        cx1.shadowColor=gl;cx1.shadowBlur=isLit?dotSz*1.1:dotSz*1.4;
+        cx1.fillStyle=`rgb(${r},${g},${b})`;
+        rr(cx1,cx_,cy_,dotSz,dotSz,dotSz*.18);cx1.fill();
+        cx1.shadowBlur=0;
+        // specular
+        cx1.fillStyle='rgba(255,255,255,.10)';
+        rr(cx1,cx_+dotSz*.15,cy_+dotSz*.1,dotSz*.38,dotSz*.22,dotSz*.08);cx1.fill();
       } else {
-        // Unlit dot - dark green ghost
-        ctx2.fillStyle = fromBottom >= DOT_ROWS - 2 ? '#1a0200' : '#011a04';
-        roundRect(ctx2, cx, cy, dotSize, dotSize, dotSize * 0.15);
-        ctx2.fill();
+        cx1.fillStyle=fb>=DOT_ROWS1-2?'#180100':'#011503';
+        rr(cx1,cx_,cy_,dotSz,dotSz,dotSz*.15);cx1.fill();
       }
     }
   }
+}
 
-  // === UPDATE UI ===
-  // Average level for VU bars
-  const avg = bands.reduce((a, b) => a + b, 0) / bands.length;
-  const peak = Math.max(...bands);
+/* =====================================================
+   UNIT 2 — Carrozzeria DEQ-900
+   Cyan/teal LED bars, 24 bands, slim tall dots
+   ===================================================== */
+const B2_FREQS=[
+  20,25,31.5,40,50,63,80,100,125,160,200,250,315,400,500,
+  630,800,1000,1250,1600,2000,2500,3150,4000,5000,6300,8000,10000,12500,16000,20000
+];
+const B2_SHOW=[20,63,200,630,2000,6300,20000];
+const DOT_ROWS2=18;
+let pk2=[],pkH2=[];
 
-  updateMiniBar('barL', avg, peak);
-  updateMiniBar('barR', avg * (0.92 + Math.random() * 0.12), peak);
+const cv2=document.getElementById('c2');
+const cx2=cv2.getContext('2d');
 
-  // 7-seg number (simulated volume)
-  const volVal = Math.round(10 + avg * 20);
-  document.getElementById('segNumber').textContent = String(volVal).padStart(2, ' ');
+function resizeCv2(){const p=cv2.parentElement;cv2.width=p.clientWidth;cv2.height=p.clientHeight;}
 
-  // Peak label flash
-  if (peak > 0.85) {
-    document.getElementById('peakLabel').style.color = '#ff2200';
-    document.getElementById('peakLabel').style.textShadow = '0 0 6px #ff4400';
-  } else {
-    document.getElementById('peakLabel').style.color = '#442200';
-    document.getElementById('peakLabel').style.textShadow = 'none';
+function buildFr2(){
+  const row=document.getElementById('fr2');row.innerHTML='';
+  B2_FREQS.forEach(f=>{
+    const d=document.createElement('div');d.className='fq2';
+    if(B2_SHOW.includes(f)){d.textContent=f>=1000?(f/1000)+'k':f;d.classList.add('bright');}
+    row.appendChild(d);
+  });
+}
+
+function drawU2(bands){
+  const W=cv2.width,H=cv2.height;
+  const nb=bands.length;
+  cx2.fillStyle='#020305';cx2.fillRect(0,0,W,H);
+  const margin=2,iW=W-margin*2,iH=H-margin*2;
+  const colW=iW/nb;
+  // DEQ-900: slimmer, taller dots
+  const dotSz=Math.min(colW*.70,iH/DOT_ROWS2*.82);
+  const gx=(colW-dotSz)/2;
+  const rowH=iH/DOT_ROWS2;
+
+  for(let col=0;col<nb;col++){
+    const v=bands[col];
+    const litR=Math.round(v*DOT_ROWS2);
+    const pkRow=DOT_ROWS2-1-Math.round(pk2[col]*(DOT_ROWS2-1));
+    const cx_=margin+col*colW+gx;
+
+    for(let row=0;row<DOT_ROWS2;row++){
+      const cy_=margin+row*rowH+(rowH-dotSz)/2;
+      const fb=DOT_ROWS2-1-row;
+      const isLit=fb<litR;
+      const isPk=row===pkRow&&pk2[col]>0.02;
+
+      if(isLit||isPk){
+        let r,g,b,gl;
+        if(fb>=DOT_ROWS2-2){// top: orange-red
+          r=255;g=isLit?40:160;b=0;
+          gl=isLit?'rgba(255,50,0,.8)':'rgba(255,160,0,.9)';
+        } else if(fb>=DOT_ROWS2-4){// yellow-green
+          r=80;g=220;b=isLit?80:200;
+          gl='rgba(80,220,150,.6)';
+        } else {// cyan-teal (Carrozzeria characteristic)
+          const br=0.5+(fb/DOT_ROWS2)*.5;
+          r=Math.floor(0*br);
+          g=Math.floor(180*br+60);
+          b=Math.floor(200*br+55);
+          gl=`rgba(0,${Math.floor(190*br)},${Math.floor(210*br)},.7)`;
+        }
+        cx2.shadowColor=gl;cx2.shadowBlur=isLit?dotSz*1.0:dotSz*1.3;
+        cx2.fillStyle=`rgb(${r},${g},${b})`;
+        rr(cx2,cx_,cy_,dotSz,dotSz,dotSz*.15);cx2.fill();
+        cx2.shadowBlur=0;
+        cx2.fillStyle='rgba(255,255,255,.08)';
+        rr(cx2,cx_+dotSz*.15,cy_+dotSz*.1,dotSz*.36,dotSz*.2,dotSz*.07);cx2.fill();
+      } else {
+        cx2.fillStyle=fb>=DOT_ROWS2-2?'#180100':'#010408';
+        rr(cx2,cx_,cy_,dotSz,dotSz,dotSz*.14);cx2.fill();
+      }
+    }
   }
 }
 
-function roundRect(ctx, x, y, w, h, r) {
-  ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.lineTo(x + w - r, y);
-  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-  ctx.lineTo(x + w, y + h - r);
-  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-  ctx.lineTo(x + r, y + h);
-  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-  ctx.lineTo(x, y + r);
-  ctx.quadraticCurveTo(x, y, x + r, y);
-  ctx.closePath();
-}
-
-function updateMiniBar(id, level, peak) {
-  const segs = document.getElementById(id).querySelectorAll('.mini-seg');
-  const n = segs.length;
-  const lit = Math.round(level * n * 1.1);
-  segs.forEach((s, i) => {
-    s.className = 'mini-seg';
-    if (i < lit) {
-      if (i >= n - 2) s.classList.add('lit-r');
-      else if (i >= n - 4) s.classList.add('lit-y');
-      else s.classList.add('lit');
+/* =====================================================
+   MINI VU UPDATE
+   ===================================================== */
+function upMv(id,level,cls,clsy,clsr){
+  const segs=document.getElementById(id).querySelectorAll('.'+cls.split(' ')[0]);
+  const n=segs.length,lit=Math.round(level*n*1.1);
+  segs.forEach((s,i)=>{
+    s.className=cls.split(' ')[0];
+    if(i<lit){
+      if(i>=n-2)s.classList.add(clsr);
+      else if(i>=n-4)s.classList.add(clsy);
+      else s.classList.add(cls.split(' ')[1]||'g');
     }
   });
 }
 
-// Sound field cycling
-const sfNames = ['studio','club','line','house','rock','pops','vocal','jazz','u1','u2','u3','u4'];
-let sfIdx = 0;
-setInterval(() => {
-  if (!isRunning) return;
-  // Only switch occasionally
-}, 5000);
+/* =====================================================
+   MAIN DRAW LOOP
+   ===================================================== */
+function draw(){
+  requestAnimationFrame(draw);
+  if(!analyser)return;
 
-function setFn(fn) {
-  document.querySelectorAll('.bb-btn.fn').forEach(b => b.classList.remove('active'));
-  document.getElementById('btn' + fn).classList.add('active');
+  const fd=new Uint8Array(analyser.frequencyBinCount);
+  analyser.getByteFrequencyData(fd);
+  const sr=audioCtx.sampleRate;
+  const nb1=B1_FREQS_FULL.length,nb2=B2_FREQS.length;
+
+  // --- Unit 1 bands ---
+  const bands1=[];
+  for(let i=0;i<nb1;i++){
+    const flo=i===0?15:Math.sqrt(B1_FREQS_FULL[i]*B1_FREQS_FULL[i-1]);
+    const fhi=i===nb1-1?22000:Math.sqrt(B1_FREQS_FULL[i]*B1_FREQS_FULL[i+1]);
+    let v=getBand(fd,sr,flo,fhi);
+    if(i>12)v=Math.min(1,v*1.4);
+    bands1.push(v);
+  }
+  // --- Unit 2 bands ---
+  const bands2=[];
+  for(let i=0;i<nb2;i++){
+    const flo=i===0?15:Math.sqrt(B2_FREQS[i]*B2_FREQS[i-1]);
+    const fhi=i===nb2-1?22000:Math.sqrt(B2_FREQS[i]*B2_FREQS[i+1]);
+    let v=getBand(fd,sr,flo,fhi);
+    if(i>22)v=Math.min(1,v*1.35);
+    bands2.push(v);
+  }
+
+  // Peak hold u1
+  for(let i=0;i<nb1;i++){
+    if(bands1[i]>=pk1[i]){pk1[i]=bands1[i];pkH1[i]=50;}
+    else{if(pkH1[i]>0)pkH1[i]--;else pk1[i]=Math.max(0,pk1[i]-.007);}
+  }
+  // Peak hold u2
+  for(let i=0;i<nb2;i++){
+    if(bands2[i]>=pk2[i]){pk2[i]=bands2[i];pkH2[i]=50;}
+    else{if(pkH2[i]>0)pkH2[i]--;else pk2[i]=Math.max(0,pk2[i]-.007);}
+  }
+
+  drawU1(bands1);
+  drawU2(bands2);
+
+  const avg1=bands1.reduce((a,b)=>a+b,0)/nb1;
+  const avg2=bands2.reduce((a,b)=>a+b,0)/nb2;
+  const peak1=Math.max(...bands1);
+  const peak2=Math.max(...bands2);
+
+  // U1 mini VU
+  upMv('mv1L',avg1,'mvseg g','y','r');
+  upMv('mv1R',avg1*(0.9+Math.random()*.15),'mvseg g','y','r');
+  // U2 mini VU
+  upMv('mv2L',avg2,'u2-mvseg g','y','r');
+  upMv('mv2R',avg2*(0.9+Math.random()*.15),'u2-mvseg g','y','r');
+
+  // 7seg numbers
+  document.getElementById('sn1').textContent=String(Math.round(10+avg1*25)).padStart(2,' ');
+  document.getElementById('sn2').textContent=String(Math.round(10+avg2*25)).padStart(2,' ');
+
+  // PEAK flash u1
+  const pk1el=document.getElementById('pk1');
+  if(peak1>0.85){pk1el.style.color='#ff3300';pk1el.style.textShadow='0 0 5px #ff4400';}
+  else{pk1el.style.color='#441100';pk1el.style.textShadow='none';}
 }
 
-function toggleMode() {
-  document.getElementById('btnFR').classList.toggle('active');
-}
-
-// Demo loop before start
-(function demoLoop() {
-  if (isRunning) return;
-  const W = canvas.width, H = canvas.height;
-  const nBands = BAND_FREQS.length;
-  const t = Date.now() / 800;
-  ctx2.fillStyle = '#020402';
-  ctx2.fillRect(0, 0, W, H);
-
-  const margin = 4;
-  const innerW = W - margin * 2;
-  const innerH = H - margin * 2;
-  const colW = innerW / nBands;
-  const dotSize = Math.min(colW * 0.80, innerH / DOT_ROWS * 0.78);
-  const dotGapX = (colW - dotSize) / 2;
-  const rowH = innerH / DOT_ROWS;
-
-  for (let col = 0; col < nBands; col++) {
-    const logF = col / nBands;
-    const v = 0.05 + Math.abs(Math.sin(t + logF * 5)) * 0.12 + Math.sin(t * 0.5 + col * 0.3) * 0.04;
-    const litRows = Math.round(v * DOT_ROWS);
-    const cx = margin + col * colW + dotGapX;
-
-    for (let row = 0; row < DOT_ROWS; row++) {
-      const cy = margin + row * rowH + (rowH - dotSize) / 2;
-      const fromBottom = DOT_ROWS - 1 - row;
-      const isLit = fromBottom < litRows;
-      ctx2.fillStyle = isLit ? (fromBottom >= DOT_ROWS-2 ? '#330000' : '#011a04') : '#010801';
-      roundRect(ctx2, cx, cy, dotSize, dotSize, dotSize * 0.15);
-      ctx2.fill();
-      if (isLit) {
-        ctx2.fillStyle = fromBottom >= DOT_ROWS-2 ? 'rgba(100,0,0,0.5)' : 'rgba(0,80,20,0.5)';
-        roundRect(ctx2, cx, cy, dotSize, dotSize, dotSize * 0.15);
-        ctx2.fill();
-      }
+/* =====================================================
+   DEMO LOOPS (before start)
+   ===================================================== */
+function demoU1(){
+  if(running)return;
+  const W=cv1.width,H=cv1.height;
+  const nb=B1_FREQS_FULL.length,t=Date.now()/900;
+  cx1.fillStyle='#030503';cx1.fillRect(0,0,W,H);
+  const margin=3,iW=W-margin*2,iH=H-margin*2;
+  const colW=iW/nb,dotSz=Math.min(colW*.80,iH/DOT_ROWS1*.80);
+  const gx=(colW-dotSz)/2,rowH=iH/DOT_ROWS1;
+  for(let col=0;col<nb;col++){
+    const v=0.04+Math.abs(Math.sin(t+col*.4))*.10+Math.sin(t*.6+col*.2)*.03;
+    const litR=Math.round(v*DOT_ROWS1);
+    const cx_=margin+col*colW+gx;
+    for(let row=0;row<DOT_ROWS1;row++){
+      const cy_=margin+row*rowH+(rowH-dotSz)/2;
+      const fb=DOT_ROWS1-1-row;
+      cx1.fillStyle=fb<litR?(fb>=DOT_ROWS1-2?'rgba(80,5,0,.6)':'rgba(0,80,20,.5)'):'#011503';
+      rr(cx1,cx_,cy_,dotSz,dotSz,dotSz*.15);cx1.fill();
     }
   }
-  requestAnimationFrame(demoLoop);
-})();
+  requestAnimationFrame(demoU1);
+}
 
-// Init
-resizeCanvas();
-buildFreqLabels();
-buildMiniBars('barL', 14);
-buildMiniBars('barR', 14);
-window.addEventListener('resize', resizeCanvas);
+function demoU2(){
+  if(running)return;
+  const W=cv2.width,H=cv2.height;
+  const nb=B2_FREQS.length,t=Date.now()/1000;
+  cx2.fillStyle='#020305';cx2.fillRect(0,0,W,H);
+  const margin=2,iW=W-margin*2,iH=H-margin*2;
+  const colW=iW/nb,dotSz=Math.min(colW*.70,iH/DOT_ROWS2*.82);
+  const gx=(colW-dotSz)/2,rowH=iH/DOT_ROWS2;
+  for(let col=0;col<nb;col++){
+    const v=0.03+Math.abs(Math.sin(t*1.1+col*.3))*.09+Math.cos(t*.5+col*.25)*.02;
+    const litR=Math.round(v*DOT_ROWS2);
+    const cx_=margin+col*colW+gx;
+    for(let row=0;row<DOT_ROWS2;row++){
+      const cy_=margin+row*rowH+(rowH-dotSz)/2;
+      const fb=DOT_ROWS2-1-row;
+      cx2.fillStyle=fb<litR?(fb>=DOT_ROWS2-2?'rgba(80,5,0,.5)':'rgba(0,30,50,.5)'):'#010408';
+      rr(cx2,cx_,cy_,dotSz,dotSz,dotSz*.14);cx2.fill();
+    }
+  }
+  requestAnimationFrame(demoU2);
+}
+
+/* =====================================================
+   BUTTON HELPERS
+   ===================================================== */
+function setFn1(fn){
+  ['F1','F2','F3','F4','U1','U2','U3','U4'].forEach(k=>{
+    const el=document.getElementById('b1'+k.toLowerCase());
+    if(el)el.classList.toggle('on',k===fn);
+  });
+}
+function setFn2(fn){
+  ['F1','F2','F3','F4','F5','U1','U2','U3'].forEach(k=>{
+    const el=document.getElementById('b2'+k.toLowerCase());
+    if(el)el.classList.toggle('on',k===fn);
+  });
+}
+
+/* =====================================================
+   INIT
+   ===================================================== */
+pk1=new Array(B1_FREQS_FULL.length).fill(0);
+pkH1=new Array(B1_FREQS_FULL.length).fill(0);
+pk2=new Array(B2_FREQS.length).fill(0);
+pkH2=new Array(B2_FREQS.length).fill(0);
+
+resizeCv1();resizeCv2();
+buildFr1();buildFr2();
+buildMv('mv1L',12,'mvseg g');buildMv('mv1R',12,'mvseg g');
+buildMv('mv2L',14,'u2-mvseg g');buildMv('mv2R',14,'u2-mvseg g');
+
+window.addEventListener('resize',()=>{resizeCv1();resizeCv2();});
+
+demoU1();demoU2();
 </script>
 </body>
 </html>
