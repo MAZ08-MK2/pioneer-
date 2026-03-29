@@ -477,17 +477,115 @@ canvas { width: 100%; height: 100%; display: block; }
   letter-spacing: 2px;
   display: none;
 }
+
+/* PASSCODE */
+.passcode-dots {
+  display: flex;
+  gap: 14px;
+  margin: 6px 0 2px;
+}
+
+.pc-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid #00aa44;
+  background: transparent;
+  transition: background 0.1s, box-shadow 0.1s;
+}
+
+.pc-dot.filled {
+  background: #00ff66;
+  box-shadow: 0 0 8px #00ff66;
+}
+
+.pc-keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.pc-key {
+  background: linear-gradient(180deg, #1a1a1a, #0e0e0e);
+  border: 1px solid #2a2a2a;
+  border-radius: 3px;
+  color: #aaa;
+  font-family: 'Orbitron', monospace;
+  font-size: 16px;
+  font-weight: 700;
+  width: 54px;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.1s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.04);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pc-key:active {
+  background: linear-gradient(180deg, #002210, #001108);
+  border-color: #00aa44;
+  color: #00ff66;
+  box-shadow: 0 0 10px rgba(0,255,100,0.3);
+}
+
+.pc-key.del {
+  font-size: 11px;
+  letter-spacing: 0;
+  color: #666;
+}
+
+.pc-err-msg {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  color: #cc2200;
+  letter-spacing: 2px;
+  height: 14px;
+  text-shadow: 0 0 4px #ff2200;
+}
+
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(6px); }
+}
 </style>
 </head>
 <body>
 
 <div class="unit">
 
-  <!-- OVERLAY -->
+  <!-- OVERLAY: PASSCODE -->
   <div class="overlay" id="overlay">
     <div class="ov-logo">⊕ PIONEER</div>
     <div class="ov-model">DSP AUDIO PROCESSOR DEQ-7200</div>
-    <button class="ov-btn" onclick="startAudio()">▶ POWER ON</button>
+    <div style="margin-top:4px; font-family:'Share Tech Mono',monospace; font-size:9px; color:#445; letter-spacing:2px;">SECURITY CODE</div>
+    <div class="passcode-dots" id="pcDots">
+      <div class="pc-dot" id="dot0"></div>
+      <div class="pc-dot" id="dot1"></div>
+      <div class="pc-dot" id="dot2"></div>
+      <div class="pc-dot" id="dot3"></div>
+    </div>
+    <div class="pc-err-msg" id="pcErr"></div>
+    <div class="pc-keypad" id="pcKeypad">
+      <button class="pc-key" onclick="pcInput('1')">1</button>
+      <button class="pc-key" onclick="pcInput('2')">2</button>
+      <button class="pc-key" onclick="pcInput('3')">3</button>
+      <button class="pc-key" onclick="pcInput('4')">4</button>
+      <button class="pc-key" onclick="pcInput('5')">5</button>
+      <button class="pc-key" onclick="pcInput('6')">6</button>
+      <button class="pc-key" onclick="pcInput('7')">7</button>
+      <button class="pc-key" onclick="pcInput('8')">8</button>
+      <button class="pc-key" onclick="pcInput('9')">9</button>
+      <button class="pc-key del" onclick="pcDel()">DEL</button>
+      <button class="pc-key" onclick="pcInput('0')">0</button>
+      <button class="pc-key del" onclick="pcClear()">CLR</button>
+    </div>
     <div class="ov-err" id="errMsg">ERROR: MIC ACCESS DENIED</div>
   </div>
 
@@ -606,6 +704,76 @@ canvas { width: 100%; height: 100%; display: block; }
 </div>
 
 <script>
+// === PASSCODE ===
+const PASSCODE = '0310';
+let pcEntry = '';
+
+function pcInput(digit) {
+  if (pcEntry.length >= 4) return;
+  pcEntry += digit;
+  updateDots();
+  if (pcEntry.length === 4) {
+    setTimeout(checkPasscode, 150);
+  }
+}
+
+function pcDel() {
+  pcEntry = pcEntry.slice(0, -1);
+  updateDots();
+  document.getElementById('pcErr').textContent = '';
+}
+
+function pcClear() {
+  pcEntry = '';
+  updateDots();
+  document.getElementById('pcErr').textContent = '';
+}
+
+function updateDots() {
+  for (let i = 0; i < 4; i++) {
+    const dot = document.getElementById('dot' + i);
+    dot.classList.toggle('filled', i < pcEntry.length);
+  }
+}
+
+function checkPasscode() {
+  if (pcEntry === PASSCODE) {
+    // Correct — flash green then start
+    document.getElementById('pcDots').style.animation = 'none';
+    for (let i = 0; i < 4; i++) {
+      const dot = document.getElementById('dot' + i);
+      dot.style.background = '#00ff66';
+      dot.style.boxShadow = '0 0 12px #00ff66';
+    }
+    setTimeout(() => startAudio(), 400);
+  } else {
+    // Wrong — shake and clear
+    const dots = document.getElementById('pcDots');
+    dots.style.animation = 'shake 0.4s ease';
+    document.getElementById('pcErr').textContent = 'ACCESS DENIED';
+    for (let i = 0; i < 4; i++) {
+      const dot = document.getElementById('dot' + i);
+      dot.style.background = '#ff2200';
+      dot.style.boxShadow = '0 0 8px #ff2200';
+      dot.style.borderColor = '#ff2200';
+    }
+    setTimeout(() => {
+      dots.style.animation = '';
+      pcEntry = '';
+      updateDots();
+      for (let i = 0; i < 4; i++) {
+        const dot = document.getElementById('dot' + i);
+        dot.style.background = '';
+        dot.style.boxShadow = '';
+        dot.style.borderColor = '';
+      }
+      setTimeout(() => {
+        document.getElementById('pcErr').textContent = '';
+      }, 800);
+    }, 600);
+  }
+}
+
 // === AUDIO ===
 let audioCtx, analyser, source, stream;
 let isRunning = false;
